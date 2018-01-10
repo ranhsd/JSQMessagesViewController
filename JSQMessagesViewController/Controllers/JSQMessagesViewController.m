@@ -982,7 +982,7 @@ JSQMessagesKeyboardControllerDelegate>
 
 - (BOOL)jsq_inputToolbarHasReachedMaximumHeight
 {
-    return CGRectGetMinY(self.inputToolbar.frame) == (self.topLayoutGuide.length + self.topContentAdditionalInset);
+    return CGRectGetMinY(self.inputToolbar.frame) == (self.topLayoutGuide.length + self.additionalContentInset.top);
 }
 
 - (void)jsq_adjustInputToolbarForComposerTextViewContentSizeChange:(CGFloat)dy
@@ -1002,8 +1002,8 @@ JSQMessagesKeyboardControllerDelegate>
     CGFloat newToolbarOriginY = toolbarOriginY - dy;
 
     //  attempted to increase origin.Y above topLayoutGuide
-    if (newToolbarOriginY <= self.topLayoutGuide.length + self.topContentAdditionalInset) {
-        dy = toolbarOriginY - (self.topLayoutGuide.length + self.topContentAdditionalInset);
+    if (newToolbarOriginY <= self.topLayoutGuide.length + self.additionalContentInset.top) {
+        dy = toolbarOriginY - (self.topLayoutGuide.length + self.additionalContentInset.top);
         [self jsq_scrollComposerTextViewToBottomAnimated:YES];
     }
 
@@ -1153,16 +1153,6 @@ JSQMessagesKeyboardControllerDelegate>
                                                                       action:@selector(jsq_handleInteractivePopGestureRecognizer:)];
         self.currentInteractivePopGestureRecognizer = self.navigationController.interactivePopGestureRecognizer;
     }
-
-    [UIView animateWithDuration:animationDuration
-                          delay:0.0
-                        options:animationCurveOption
-                     animations:^{
-                         const UIEdgeInsets insets = self.additionalContentInset;
-                         [self jsq_setCollectionViewInsetsTopValue:insets.top
-                                                       bottomValue:CGRectGetHeight(keyboardEndFrame) + insets.bottom];
-                     }
-                     completion:nil];
 }
 
 @end
